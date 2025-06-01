@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="lec18" />
+        <module name="lec21" />
+        <module name="lec21.2" />
+        <module name="lec20" />
+        <module name="java_prtc21" />
+        <module name="lec21.3" />
+      </profile>
+    </annotationProcessing>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="java_prtc21" options="-parameters" />
+      <module name="lec18" options="-parameters" />
+      <module name="lec20" options="-parameters" />
+      <module name="lec21" options="-parameters" />
+      <module name="lec21.2" options="-parameters" />
+      <module name="lec21.3" options="-parameters" />
+    </option>
+  </component>
+</project>
