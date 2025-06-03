@@ -1,41 +1,44 @@
 package tacos;
 
-import jakarta.persistence.*;
+// JPA용 import 제거
+// import jakarta.persistence.*;
+
+// MongoDB 전용 어노테이션 import
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
 /**
- * Spring Security의 UserDetails를 구현한 User 엔티티.
+ * Spring Security의 UserDetails를 구현한 User 엔티티 (MongoDB 전용).
  */
-@Entity
-@Table(name="users")
-@Document(collection="users")
+@Document(collection = "users")  // JPA @Entity/@Table 대신 MongoDB @Document만 사용
 public class User implements UserDetails {
 
-    @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
-    private Long id;
+    @Id                   // MongoDB용 @Id
+    private String id;     // Long → String으로 변경
 
-    private String username;    // 로그인 ID
-    private String password;    // 암호화된 비밀번호
+    private String username;
+    private String password;
+    private String fullname;
+    private String street;
+    private String city;
+    private String state;
+    private String zip;
+    private String phone;
 
-    private String fullname;    // 실명
-    private String street;      // 배송지 - 도로명
-    private String city;        // 배송지 - 도시
-    private String state;       // 배송지 - 주/도
-    private String zip;         // 배송지 - 우편번호
-    private String phone;       // 연락처
-
-    public User() {}  // JPA, Jackson 등을 위해 꼭 필요합니다.
+    public User() {}
 
     /**
      * RegistrationForm 으로부터 User 엔티티를 생성할 때 사용합니다.
      */
     public User(String username, String password,
-                String fullname, String street, String city, String state, String zip, String phone) {
+                String fullname, String street,
+                String city, String state,
+                String zip, String phone) {
         this.username = username;
         this.password = password;
         this.fullname = fullname;
@@ -47,10 +50,10 @@ public class User implements UserDetails {
     }
 
     // --- UserDetails 인터페이스 구현 --- //
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null; // 예제에서는 권한 구분을 하지 않으므로 null 또는 빈 컬렉션을 반환해도 무방합니다.
+        // 여기서는 ROLE_USER 같은 권한을 설정해주시면 됩니다.
+        return null;
     }
 
     @Override
@@ -83,34 +86,14 @@ public class User implements UserDetails {
         return true;
     }
 
-    // --- 사용자 프로필용 getter 메서드 (OrderController 등에서 호출) --- //
-
-    public String getFullname() {
-        return fullname;
+    // --- User 엔티티 Getter / Setter --- //
+    public String getId() {
+        return id;
     }
 
-    public String getStreet() {
-        return street;
+    public void setId(String id) {
+        this.id = id;
     }
-
-    public String getCity() {
-        return city;
-    }
-
-    public String getState() {
-        return state;
-    }
-
-    public String getZip() {
-        return zip;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    // --- (선택) setter 메서드 --- //
-    // JPA/Hibernate가 필요로 하는 경우나, 테스트 코드에서 값을 주입할 때 사용합니다.
 
     public void setUsername(String username) {
         this.username = username;
@@ -120,29 +103,53 @@ public class User implements UserDetails {
         this.password = password;
     }
 
+    public String getFullname() {
+        return fullname;
+    }
+
     public void setFullname(String fullname) {
         this.fullname = fullname;
+    }
+
+    public String getStreet() {
+        return street;
     }
 
     public void setStreet(String street) {
         this.street = street;
     }
 
+    public String getCity() {
+        return city;
+    }
+
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public String getState() {
+        return state;
     }
 
     public void setState(String state) {
         this.state = state;
     }
 
+    public String getZip() {
+        return zip;
+    }
+
     public void setZip(String zip) {
         this.zip = zip;
+    }
+
+    public String getPhone() {
+        return phone;
     }
 
     public void setPhone(String phone) {
         this.phone = phone;
     }
 
-    // (추가필요) equals, hashCode, toString 등
+    // (추가 구성이 필요하면 equals, hashCode, toString 등을 오버라이드)
 }
