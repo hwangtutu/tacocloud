@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
@@ -7,9 +8,13 @@
 </head>
 
 <body>
-<h1>2021810076 황건수 Design your taco!</h1>
-<h2>Feelin' hungey, <span th:text="${user.fullname}">NAME</span></h2>
+<h1>Design your taco!</h1>
+<h2>Feelin' hungry, <span th:text="${user.fullname}">NAME</span></h2>
 <img th:src="@{/images/TacoCloud.png}"/>
+
+<form method="Post" th:action="@{/logout}">
+    <input type="submit" value="Logout"/>
+</form>
 
 <form th:method="POST" th:object="${taco}" th:action="@{/design}" id="tacoForm">
     <div class="grid">
@@ -59,15 +64,15 @@
         </div>
     </div>
 
-<!--    <div>-->
-<!--        <h3>Name your taco creation:</h3>-->
-<!--        <input type="text" th:field="*{name}"/>-->
-<!--        <span class="validationError"-->
-<!--              th:if="${#fields.hasErrors('name')}"-->
-<!--              th:errors="*{name}">name Error</span>-->
-<!--        <br/>-->
-<!--        <button>Submit Your Taco</button>-->
-<!--    </div>-->
+    <!--    <div>-->
+    <!--        <h3>Name your taco creation:</h3>-->
+    <!--        <input type="text" th:field="*{name}"/>-->
+    <!--        <span class="validationError"-->
+    <!--              th:if="${#fields.hasErrors('name')}"-->
+    <!--              th:errors="*{name}">name Error</span>-->
+    <!--        <br/>-->
+    <!--        <button>Submit Your Taco</button>-->
+    <!--    </div>-->
     <div>
         <form method="POST" th:action="@{/design}" th:object="${taco}">
             <h3>Name your taco creation:</h3>
@@ -77,9 +82,6 @@
             <button>Submit Your Taco</button>
         </form>
     </div>
-</form>
-<form th:action="@{/logout}" method="post">
-    <input type="submit" value="Logout"/>
 </form>
 </body>
 </html>

@@ -1,3 +1,4 @@
+
 package tacos.web;
 
 import jakarta.validation.Valid;
@@ -11,18 +12,18 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import java.security.Principal;
 
 import tacos.Ingredient;
 import tacos.Ingredient.Type;
 import tacos.TacoOrder;
 import tacos.Taco;
-import tacos.User;
 import tacos.data.IngredientRepository;
-import tacos.data.UserRepository;
+import tacos.User;
 
-import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
+import tacos.data.UserRepository;
 
 @Slf4j
 @Controller
@@ -39,11 +40,28 @@ public class DesignTacoController {
         this.userRepo = userRepo;
     }
 
+    @ModelAttribute
+    public void addIngredientsToModel(Model model) {
+        Iterable<Ingredient> ingredients = ingredientRepo.findAll();
+        Type[] types = Type.values();
+        for (Type type : types) {
+            model.addAttribute(type.toString().toLowerCase(),
+                    filterByType((List<Ingredient>) ingredients, type));
+        }
+    }
+
+    @ModelAttribute(name = "tacoOrder")
+    public TacoOrder order() {
+        return new TacoOrder();
+    }
+
     @ModelAttribute(name = "taco")
-    public Taco taco(){ return new Taco();}
+    public Taco taco() {
+        return new Taco();
+    }
 
     @ModelAttribute(name = "user")
-    public User user(Principal principal) {
+    public User user(Principal principal){
         String username = principal.getName();
         User user = userRepo.findByUsername(username);
         return user;
